@@ -5,6 +5,11 @@ const path = require('path')
 const { Transaction } = require('@models')
 const { getHeader, log } = require('@utils')
 
+
+const chatId = [];
+
+
+
 const getTransaction = async () => {
 
 	let finalCheck
@@ -102,22 +107,21 @@ const checkTransaction = async (finalCheck, data) => {
 	const transactions = await Transaction.aggregate([
 		{
 			$match: {
-				timestamp: { $gte: twoMinutesAgo, $lte: now },
-				swap_token_id: { $in: idList },
+				_id: { $in: idList }
 			}
 		}
 	])
 
-	console.log(idList, transactions)
+	console.log(transactions)
 
-	for(let i = 0; i < global.chatId.length; i++) {
-		global.telegramBot.sendMessage(global.chatId[i], JSON.stringify(idList));
-	}
 
+	for(let i = 0; i < chatId.length; i++)
+		global.telegramBot.sendMessage(chatId[i], transactions);
 
 	return transactions
 
 }
+
 
 module.exports = {
 	getTransaction,

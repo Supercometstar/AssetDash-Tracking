@@ -2,7 +2,7 @@ require('module-alias/register')
 
 const dotenv = require('dotenv')
 
-const { DataAPI } = require('@apis')
+const { DataAPI, TelegramAPI } = require('@apis')
 const { createBrowser, createPage, login, checkLogin }  = require('@lib')
 const { log } = require('@utils')
 
@@ -11,6 +11,7 @@ dotenv.config({ path: '.env' })
 const start = async () => {
 	
 	await DataAPI.listen(process.env.MONGODB_URI)
+	TelegramAPI.listen()
 
 	log('Opening browser!')
 		const browser = await createBrowser()
